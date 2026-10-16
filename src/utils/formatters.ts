@@ -40,3 +40,28 @@ export function formatEpisodeCount(episodes?: number | null, status?: string | n
       return status.replace(/_/g, ' ');
   }
 }
+
+export function formatSynopsis(raw?: string | null): string {
+  if (!raw) return 'No synopsis available.';
+
+  return (
+    raw
+      .replace(/<br\s*[/]?>/gi, '\n')
+      .replace(/<[^>]+>/g, '')
+      .replace(/&quot;/g, '"')
+      .replace(/&#039;|&apos;/g, "'")
+      .replace(/&amp;/g, '&')
+      .replace(/&lt;/g, '<')
+      .replace(/&gt;/g, '>')
+      .replace(/&mdash;/g, '—')
+      .replace(/&ndash;/g, '–')
+      .replace(/&hellip;/g, '…')
+      .replace(/&nbsp;/g, ' ')
+      .split('\n')
+      .map((line) => line.replace(/[ \t]+/g, ' ').trim())
+      .join('\n')
+      .replace(/\n{3,}/g, '\n\n')
+      .trim() || 'No synopsis available.'
+  );
+}
+

@@ -3,6 +3,7 @@ import { Handle, Position, useUpdateNodeInternals } from '@xyflow/react';
 import { Check } from 'lucide-react';
 import type { AnimeNodeData } from '../types/anime';
 import { formatMediaType, formatEpisodeCount } from '../utils/formatters';
+import { Tooltip } from './Tooltip';
 
 interface AnimeNodeProps {
   id: string;
@@ -91,12 +92,11 @@ export const AnimeNode = memo(({ id, data, selected }: AnimeNodeProps) => {
         </div>
 
         <div className="flex-1 min-w-0 flex flex-col justify-center h-full">
-          <h4
-            className="text-[11px] font-semibold truncate leading-tight text-zinc-950 dark:text-zinc-100 group-hover:text-black dark:group-hover:text-white transition-colors"
-            title={displayTitle}
-          >
-            {displayTitle}
-          </h4>
+          <Tooltip content={displayTitle} side="top" delayMs={250} wrapperClassName="min-w-0 max-w-full">
+            <h4 className="text-[11px] font-semibold truncate leading-tight text-zinc-950 dark:text-zinc-100 group-hover:text-black dark:group-hover:text-white transition-colors">
+              {displayTitle}
+            </h4>
+          </Tooltip>
           <div className="flex items-center gap-1.5 font-mono text-[8.5px] text-zinc-500 dark:text-zinc-400 mt-0.5 leading-none">
             <span className="font-semibold text-zinc-800 dark:text-zinc-300 uppercase">
               {formattedFormat}
@@ -192,12 +192,11 @@ export const AnimeNode = memo(({ id, data, selected }: AnimeNodeProps) => {
         </div>
 
         <div className="min-w-0 my-0.5">
-          <h4
-            className="text-[11.5px] font-semibold truncate leading-tight text-zinc-950 dark:text-zinc-100 group-hover:text-black dark:group-hover:text-white transition-colors"
-            title={displayTitle}
-          >
-            {displayTitle}
-          </h4>
+          <Tooltip content={displayTitle} side="top" delayMs={250} wrapperClassName="min-w-0 max-w-full">
+            <h4 className="text-[11.5px] font-semibold truncate leading-tight text-zinc-950 dark:text-zinc-100 group-hover:text-black dark:group-hover:text-white transition-colors">
+              {displayTitle}
+            </h4>
+          </Tooltip>
         </div>
 
         <div className="flex items-center justify-between text-[9px] font-mono pt-1 border-t border-zinc-200/80 dark:border-white/5 leading-none">

@@ -74,10 +74,10 @@ export function buildDagreLayout(
   g.setDefaultEdgeLabel(() => ({}));
   g.setGraph({
     rankdir: 'LR',
-    nodesep: viewMode === 'compact' ? 40 : 64,
-    ranksep: viewMode === 'compact' ? 100 : 140,
-    marginx: 48,
-    marginy: 48,
+    nodesep: viewMode === 'compact' ? 28 : 44,
+    ranksep: viewMode === 'compact' ? 44 : 64,
+    marginx: 32,
+    marginy: 32,
   });
 
   filteredMediaMap.forEach((media) => {
@@ -90,20 +90,6 @@ export function buildDagreLayout(
 
   validEdges.forEach((edge, index) => {
     try {
-      const rawLabel =
-        edge.type === 'SEQUEL'
-          ? 'Sequel'
-          : edge.type === 'SIDE_STORY'
-          ? 'Side Story'
-          : edge.type === 'SPIN_OFF'
-          ? 'Spin-off'
-          : edge.type === 'ALTERNATIVE'
-          ? 'Alternative'
-          : edge.type.replace('_', ' ');
-
-      const labelWidth = Math.max(70, rawLabel.length * 8 + 20);
-      const labelHeight = 24;
-
       let weight = 1;
       let minlen = 1;
 
@@ -124,7 +110,7 @@ export function buildDagreLayout(
       g.setEdge(
         edge.source.toString(),
         edge.target.toString(),
-        { width: labelWidth, height: labelHeight, labelpos: 'c', weight, minlen },
+        { width: 25, height: 25, labelpos: 'c', weight, minlen },
         `e_${index}`
       );
     } catch (err) {

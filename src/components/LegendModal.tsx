@@ -1,5 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import { X, Check } from 'lucide-react';
+import { Tooltip } from './Tooltip';
 
 interface LegendModalProps {
   isOpen: boolean;
@@ -40,13 +41,14 @@ export const LegendModal: React.FC<LegendModalProps> = ({ isOpen, onClose }) => 
         className="w-full max-w-lg bg-white dark:bg-[#0c0c0e] border border-zinc-200 dark:border-white/10 rounded-2xl p-6 shadow-2xl relative text-zinc-900 dark:text-zinc-100 flex flex-col gap-5"
       >
         <div className="flex justify-end">
-          <button
-            onClick={onClose}
-            className="p-1.5 rounded-lg text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white hover:bg-zinc-100 dark:hover:bg-white/10 transition-colors cursor-pointer"
-            title="Close"
-          >
-            <X className="w-4 h-4" />
-          </button>
+          <Tooltip content="Close (Esc)" side="left">
+            <button
+              onClick={onClose}
+              className="p-1.5 rounded-lg text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white hover:bg-zinc-100 dark:hover:bg-white/10 transition-colors cursor-pointer"
+            >
+              <X className="w-4 h-4" />
+            </button>
+          </Tooltip>
         </div>
 
         <div className="space-y-3">

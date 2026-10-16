@@ -20,6 +20,7 @@ import {
 import { searchAnime } from '../api/anilist';
 import type { AniListUser, AniListMedia, GraphFilterOptions, SearchHistoryItem } from '../types/anime';
 import { formatMediaType, formatEpisodeCount } from '../utils/formatters';
+import { Tooltip } from './Tooltip';
 
 interface FloatingNavProps {
   user: AniListUser | null;
@@ -296,14 +297,15 @@ export const FloatingNav: React.FC<FloatingNavProps> = ({
           >
             <div className="flex items-center gap-2 pl-1 pr-1">
               {hasActiveAnime && onClearFranchise && (
-                <button
-                  type="button"
-                  onClick={onClearFranchise}
-                  className="w-6 h-6 rounded-full text-zinc-400 hover:text-zinc-900 dark:text-zinc-500 dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/10 flex items-center justify-center transition-colors cursor-pointer mr-0.5"
-                  title="Back to search (Home)"
-                >
-                  <Home className="w-3.5 h-3.5" />
-                </button>
+                <Tooltip content="Back to search" side="bottom">
+                  <button
+                    type="button"
+                    onClick={onClearFranchise}
+                    className="w-6 h-6 rounded-full text-zinc-400 hover:text-zinc-900 dark:text-zinc-500 dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/10 flex items-center justify-center transition-colors cursor-pointer mr-0.5"
+                  >
+                    <Home className="w-3.5 h-3.5" />
+                  </button>
+                </Tooltip>
               )}
               <Search
                 className={`text-zinc-400 dark:text-zinc-500 shrink-0 ${
@@ -331,18 +333,19 @@ export const FloatingNav: React.FC<FloatingNavProps> = ({
               {isSearching ? (
                 <Loader2 className="w-3.5 h-3.5 text-zinc-400 dark:text-zinc-500 animate-spin shrink-0" />
               ) : searchQuery ? (
-                <button
-                  onClick={() => {
-                    setSearchQuery('');
-                    setSearchResults([]);
-                    setIsSearchFocused(true);
-                    searchInputRef.current?.focus();
-                  }}
-                  className="text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-200 text-xs cursor-pointer"
-                  title="Clear"
-                >
-                  <X className="w-3.5 h-3.5" />
-                </button>
+                <Tooltip content="Clear search" side="bottom">
+                  <button
+                    onClick={() => {
+                      setSearchQuery('');
+                      setSearchResults([]);
+                      setIsSearchFocused(true);
+                      searchInputRef.current?.focus();
+                    }}
+                    className="text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-200 text-xs cursor-pointer"
+                  >
+                    <X className="w-3.5 h-3.5" />
+                  </button>
+                </Tooltip>
               ) : (
                 <kbd className="hidden sm:inline-block px-1.5 py-0.5 rounded bg-zinc-100 dark:bg-white/4 border border-zinc-200 dark:border-white/10 text-[10px] font-mono text-zinc-400 select-none">
                   ⌘K
@@ -353,27 +356,28 @@ export const FloatingNav: React.FC<FloatingNavProps> = ({
             <div className={`w-px bg-zinc-200 dark:bg-white/10 mx-0.5 ${hasActiveAnime ? 'h-4' : 'h-5'}`} />
 
             <div ref={filterRef}>
-              <button
-                onClick={() => {
-                  setIsFilterOpen(!isFilterOpen);
-                  if (!isFilterOpen) {
-                    setIsUserModalOpen(false);
-                    setSearchResults([]);
-                    setIsSearchFocused(false);
-                  }
-                }}
-                className={`relative w-8 h-8 rounded-full border text-xs font-medium flex items-center justify-center transition-all cursor-pointer active:scale-95 ${
-                  hasActiveFilters
-                    ? 'bg-[#8b5cf6]/10 border-[#8b5cf6]/30 text-[#7c3aed] dark:bg-white/15 dark:border-white/20 dark:text-white'
-                    : 'bg-transparent border-transparent text-zinc-600 dark:text-zinc-400 hover:text-zinc-950 dark:hover:text-zinc-200 hover:bg-black/5 dark:hover:bg-white/6'
-                }`}
-                title="Filters"
-              >
-                <Filter className="w-4 h-4" />
-                {hasActiveFilters && (
-                  <span className="absolute top-1 right-1 w-1.5 h-1.5 rounded-full bg-[#8b5cf6] dark:bg-[#c4b5fd]" />
-                )}
-              </button>
+              <Tooltip content="Timeline Filters" side="bottom">
+                <button
+                  onClick={() => {
+                    setIsFilterOpen(!isFilterOpen);
+                    if (!isFilterOpen) {
+                      setIsUserModalOpen(false);
+                      setSearchResults([]);
+                      setIsSearchFocused(false);
+                    }
+                  }}
+                  className={`relative w-8 h-8 rounded-full border text-xs font-medium flex items-center justify-center transition-all cursor-pointer active:scale-95 ${
+                    hasActiveFilters
+                      ? 'bg-[#8b5cf6]/10 border-[#8b5cf6]/30 text-[#7c3aed] dark:bg-white/15 dark:border-white/20 dark:text-white'
+                      : 'bg-transparent border-transparent text-zinc-600 dark:text-zinc-400 hover:text-zinc-950 dark:hover:text-zinc-200 hover:bg-black/5 dark:hover:bg-white/6'
+                  }`}
+                >
+                  <Filter className="w-4 h-4" />
+                  {hasActiveFilters && (
+                    <span className="absolute top-1 right-1 w-1.5 h-1.5 rounded-full bg-[#8b5cf6] dark:bg-[#c4b5fd]" />
+                  )}
+                </button>
+              </Tooltip>
 
               {isFilterOpen && (
                 <div className="absolute right-2 sm:right-3 top-full mt-3 w-56 bg-white/95 dark:bg-[#0c0c0e]/95 backdrop-blur-xl border border-zinc-300/80 dark:border-white/10 rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.15)] dark:shadow-[0_25px_60px_rgba(0,0,0,0.95)] p-2.5 z-50 flex flex-col gap-1 text-xs animate-in fade-in zoom-in-95 duration-150">
@@ -505,41 +509,44 @@ export const FloatingNav: React.FC<FloatingNavProps> = ({
                   <span className="text-zinc-800 dark:text-zinc-200 text-xs max-w-20 truncate font-medium">
                     {user.name}
                   </span>
-                  <button
-                    onClick={onRefreshUser}
-                    disabled={isLoadingUser}
-                    title="Refresh AniList"
-                    className="text-zinc-400 hover:text-zinc-800 dark:hover:text-white cursor-pointer active:scale-95 transition-transform"
-                  >
-                    <RefreshCw className={`w-3 h-3 ${isLoadingUser ? 'animate-spin' : ''}`} />
-                  </button>
-                  <button
-                    onClick={onLogoutUser}
-                    title="Disconnect"
-                    className="text-zinc-400 hover:text-red-500 cursor-pointer active:scale-95 transition-transform"
-                  >
-                    <X className="w-3 h-3" />
-                  </button>
+                  <Tooltip content="Refresh AniList" side="bottom">
+                    <button
+                      onClick={onRefreshUser}
+                      disabled={isLoadingUser}
+                      className="text-zinc-400 hover:text-zinc-800 dark:hover:text-white cursor-pointer active:scale-95 transition-transform"
+                    >
+                      <RefreshCw className={`w-3 h-3 ${isLoadingUser ? 'animate-spin' : ''}`} />
+                    </button>
+                  </Tooltip>
+                  <Tooltip content="Disconnect" side="bottom">
+                    <button
+                      onClick={onLogoutUser}
+                      className="text-zinc-400 hover:text-red-500 cursor-pointer active:scale-95 transition-transform"
+                    >
+                      <X className="w-3 h-3" />
+                    </button>
+                  </Tooltip>
                 </div>
               ) : (
-                <button
-                  onClick={() => {
-                    setIsUserModalOpen(!isUserModalOpen);
-                    if (!isUserModalOpen) {
-                      setIsFilterOpen(false);
-                      setSearchResults([]);
-                      onClearUserError?.();
-                    }
-                  }}
-                  className={`w-8 h-8 rounded-full border text-xs font-medium flex items-center justify-center transition-all cursor-pointer active:scale-95 ${
-                    isUserModalOpen
-                      ? 'bg-[#8b5cf6]/10 border-[#8b5cf6]/30 text-[#7c3aed] dark:bg-white/15 dark:border-white/20 dark:text-white'
-                      : 'bg-transparent border-transparent text-zinc-600 dark:text-zinc-400 hover:text-zinc-950 dark:hover:text-zinc-200 hover:bg-black/5 dark:hover:bg-white/6'
-                  }`}
-                  title="Connect AniList"
-                >
-                  <User className="w-4 h-4" />
-                </button>
+                <Tooltip content="Connect AniList" side="bottom">
+                  <button
+                    onClick={() => {
+                      setIsUserModalOpen(!isUserModalOpen);
+                      if (!isUserModalOpen) {
+                        setIsFilterOpen(false);
+                        setSearchResults([]);
+                        onClearUserError?.();
+                      }
+                    }}
+                    className={`w-8 h-8 rounded-full border text-xs font-medium flex items-center justify-center transition-all cursor-pointer active:scale-95 ${
+                      isUserModalOpen
+                        ? 'bg-[#8b5cf6]/10 border-[#8b5cf6]/30 text-[#7c3aed] dark:bg-white/15 dark:border-white/20 dark:text-white'
+                        : 'bg-transparent border-transparent text-zinc-600 dark:text-zinc-400 hover:text-zinc-950 dark:hover:text-zinc-200 hover:bg-black/5 dark:hover:bg-white/6'
+                    }`}
+                  >
+                    <User className="w-4 h-4" />
+                  </button>
+                </Tooltip>
               )}
 
               {isUserModalOpen && !user && (
@@ -611,21 +618,23 @@ export const FloatingNav: React.FC<FloatingNavProps> = ({
               )}
             </div>
 
-            <button
-              onClick={onToggleTheme}
-              className="w-8 h-8 rounded-full bg-transparent hover:bg-black/5 dark:hover:bg-white/6 text-zinc-600 dark:text-zinc-400 hover:text-zinc-950 dark:hover:text-zinc-200 flex items-center justify-center transition-all cursor-pointer active:scale-95"
-              title={theme === 'dark' ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
-            >
-              {theme === 'dark' ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
-            </button>
+            <Tooltip content={theme === 'dark' ? 'Light Mode' : 'Dark Mode'} side="bottom">
+              <button
+                onClick={onToggleTheme}
+                className="w-8 h-8 rounded-full bg-transparent hover:bg-black/5 dark:hover:bg-white/6 text-zinc-600 dark:text-zinc-400 hover:text-zinc-950 dark:hover:text-zinc-200 flex items-center justify-center transition-all cursor-pointer active:scale-95"
+              >
+                {theme === 'dark' ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
+              </button>
+            </Tooltip>
 
-            <button
-              onClick={onOpenLegend}
-              className="w-8 h-8 rounded-full bg-transparent hover:bg-black/5 dark:hover:bg-white/6 text-zinc-600 dark:text-zinc-400 hover:text-zinc-950 dark:hover:text-zinc-200 flex items-center justify-center transition-all cursor-pointer active:scale-95"
-              title="Legend"
-            >
-              <HelpCircle className="w-4 h-4" />
-            </button>
+            <Tooltip content="Legend & Guide" side="bottom">
+              <button
+                onClick={onOpenLegend}
+                className="w-8 h-8 rounded-full bg-transparent hover:bg-black/5 dark:hover:bg-white/6 text-zinc-600 dark:text-zinc-400 hover:text-zinc-950 dark:hover:text-zinc-200 flex items-center justify-center transition-all cursor-pointer active:scale-95"
+              >
+                <HelpCircle className="w-4 h-4" />
+              </button>
+            </Tooltip>
           </div>
 
           {(hasSearchResults || (isSearchFocused && (favorites.length > 0 || recents.length > 0))) && (
@@ -701,21 +710,25 @@ export const FloatingNav: React.FC<FloatingNavProps> = ({
                                   </span>
                                   {item.seasonYear && <span>// {item.seasonYear}</span>}
                                   <span>// {formatEpisodeCount(item.episodes, item.status)}</span>
-                                  {score && (
-                                    <span className="text-zinc-700 dark:text-zinc-300 ml-auto flex items-center gap-0.5">
-                                      <Star className="w-2.5 h-2.5 fill-current text-amber-500 dark:text-zinc-400" />
-                                      {score}
-                                    </span>
-                                  )}
                                 </div>
                               </div>
 
-                              {isSelected && (
-                                <div className="flex items-center gap-1 text-[10px] text-zinc-500 dark:text-zinc-400 pr-1 shrink-0 font-mono">
-                                  <span>Open</span>
-                                  <CornerDownLeft className="w-3 h-3 text-zinc-700 dark:text-zinc-300" />
+                              <div className="shrink-0 flex flex-col items-end justify-between self-stretch py-0.5 font-mono text-[10px]">
+                                <div className="h-4 flex items-center pr-1">
+                                  {isSelected && (
+                                    <span className="flex items-center gap-1 text-zinc-500 dark:text-zinc-400 animate-in fade-in duration-100">
+                                      <span>Open</span>
+                                      <CornerDownLeft className="w-3 h-3 text-zinc-700 dark:text-zinc-300" />
+                                    </span>
+                                  )}
                                 </div>
-                              )}
+                                {score && (
+                                  <span className="text-zinc-700 dark:text-zinc-300 flex items-center gap-0.5 pr-1">
+                                    <Star className="w-2.5 h-2.5 fill-current text-amber-500 dark:text-zinc-400" />
+                                    {score}
+                                  </span>
+                                )}
+                              </div>
                             </div>
                           );
                         })}
@@ -769,14 +782,15 @@ export const FloatingNav: React.FC<FloatingNavProps> = ({
                                 {item.seasonYear && <span>// {item.seasonYear}</span>}
                               </div>
                             </div>
-                            <button
-                              type="button"
-                              onClick={(e) => toggleFavorite(item, e)}
-                              className="p-1.5 rounded-lg text-amber-500 hover:bg-amber-50 dark:hover:bg-amber-950/30 transition-colors cursor-pointer"
-                              title="Remove from favorites"
-                            >
-                              <Star className="w-3.5 h-3.5 fill-current" />
-                            </button>
+                            <Tooltip content="Remove from favorites" side="left">
+                              <button
+                                type="button"
+                                onClick={(e) => toggleFavorite(item, e)}
+                                className="p-1.5 rounded-lg text-amber-500 hover:bg-amber-50 dark:hover:bg-amber-950/30 transition-colors cursor-pointer"
+                              >
+                                <Star className="w-3.5 h-3.5 fill-current" />
+                              </button>
+                            </Tooltip>
                           </div>
                         ))}
                       </div>
@@ -823,26 +837,28 @@ export const FloatingNav: React.FC<FloatingNavProps> = ({
                                   {item.seasonYear && <span>// {item.seasonYear}</span>}
                                 </div>
                               </div>
-                              <button
-                                type="button"
-                                onClick={(e) => toggleFavorite(item, e)}
-                                className={`p-1.5 rounded-lg transition-colors cursor-pointer ${
-                                  isFav
-                                    ? 'text-amber-500 hover:bg-amber-50 dark:hover:bg-amber-950/30'
-                                    : 'text-zinc-400 hover:text-amber-500 hover:bg-zinc-200 dark:hover:bg-white/10'
-                                }`}
-                                title={isFav ? 'Remove from favorites' : 'Add to favorites'}
-                              >
-                                <Star className={`w-3.5 h-3.5 ${isFav ? 'fill-current' : ''}`} />
-                              </button>
-                              <button
-                                type="button"
-                                onClick={(e) => removeRecent(item.id, e)}
-                                className="p-1.5 rounded-lg text-zinc-400 hover:text-red-500 hover:bg-zinc-200 dark:hover:bg-white/10 transition-colors cursor-pointer"
-                                title="Remove from recent"
-                              >
-                                <Trash2 className="w-3.5 h-3.5" />
-                              </button>
+                              <Tooltip content={isFav ? 'Remove favorite' : 'Add favorite'} side="left">
+                                <button
+                                  type="button"
+                                  onClick={(e) => toggleFavorite(item, e)}
+                                  className={`p-1.5 rounded-lg transition-colors cursor-pointer ${
+                                    isFav
+                                      ? 'text-amber-500 hover:bg-amber-50 dark:hover:bg-amber-950/30'
+                                      : 'text-zinc-400 hover:text-amber-500 hover:bg-zinc-200 dark:hover:bg-white/10'
+                                  }`}
+                                >
+                                  <Star className={`w-3.5 h-3.5 ${isFav ? 'fill-current' : ''}`} />
+                                </button>
+                              </Tooltip>
+                              <Tooltip content="Remove from history" side="left">
+                                <button
+                                  type="button"
+                                  onClick={(e) => removeRecent(item.id, e)}
+                                  className="p-1.5 rounded-lg text-zinc-400 hover:text-red-500 hover:bg-zinc-200 dark:hover:bg-white/10 transition-colors cursor-pointer"
+                                >
+                                  <Trash2 className="w-3.5 h-3.5" />
+                                </button>
+                              </Tooltip>
                             </div>
                           );
                         })}

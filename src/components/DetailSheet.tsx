@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { X, ExternalLink, Star, Calendar, Building2 } from 'lucide-react';
 import type { AnimeNodeData } from '../types/anime';
-import { formatMediaType, formatEpisodeCount } from '../utils/formatters';
+import { formatMediaType, formatEpisodeCount, formatSynopsis } from '../utils/formatters';
+import { Tooltip } from './Tooltip';
 
 interface DetailSheetProps {
   media: AnimeNodeData | null;
@@ -12,6 +13,16 @@ export const DetailSheet: React.FC<DetailSheetProps> = ({
   media,
   onClose,
 }) => {
+  useEffect(() => {
+    function handleKeyDown(e: KeyboardEvent) {
+      if (e.key === 'Escape') {
+        onClose();
+      }
+    }
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [onClose]);
+
   if (!media) return null;
 
   const englishTitle = media.title?.english;
@@ -27,26 +38,25 @@ export const DetailSheet: React.FC<DetailSheetProps> = ({
   const isPlanning = media.watchStatus === 'PLANNING';
   const isNextUp = media.isNextUp;
 
-  const cleanDescription = media.description
-    ? media.description.replace(/<br\s*[/]?>/gi, '\n').replace(/<[^>]+>/g, '')
-    : 'No synopsis available.';
+  const cleanDescription = formatSynopsis(media.description);
 
   return (
     <div className="fixed inset-0 z-50 overflow-hidden pointer-events-auto">
       <div
-        className="absolute inset-0 bg-black/50 dark:bg-black/75 backdrop-blur-sm transition-opacity"
+        className="absolute inset-0 bg-black/20 dark:bg-black/20 backdrop-blur-sm transition-opacity"
         onClick={onClose}
       />
 
       <div className="fixed inset-y-0 right-0 max-w-full flex pl-4 sm:pl-6">
         <div className="w-screen max-w-md bg-white dark:bg-[#0c0c0e] border-l border-zinc-200 dark:border-white/10 shadow-2xl flex flex-col text-zinc-900 dark:text-zinc-100 relative">
-          <button
-            onClick={onClose}
-            className="absolute top-4 right-4 z-30 w-8 h-8 rounded-full bg-black/60 hover:bg-black/80 backdrop-blur-md text-white border border-white/20 flex items-center justify-center transition-all cursor-pointer shadow-lg active:scale-95"
-            title="Close"
-          >
-            <X className="w-4 h-4" />
-          </button>
+          <Tooltip content="Close (Esc)" side="left">
+            <button
+              onClick={onClose}
+              className="absolute top-4 right-4 z-30 w-8 h-8 rounded-full bg-black/60 hover:bg-black/80 backdrop-blur-md text-white border border-white/20 flex items-center justify-center transition-all cursor-pointer shadow-lg active:scale-95"
+            >
+              <X className="w-4 h-4" />
+            </button>
+          </Tooltip>
 
           <div className="relative h-44 w-full bg-zinc-900 shrink-0 overflow-hidden">
             {media.bannerImage ? (
