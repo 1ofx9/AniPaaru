@@ -6,7 +6,7 @@ Interactive anime watch order and relation graph visualizer powered by the AniLi
 
 <div align="center">
   <p style="font-weight: bold">Home</p>
-  <img src="docs/images/hero_page.png" alt="Home Screen" width="100%" />
+  <img src="docs/images/hero.png" alt="Home Screen" width="100%" />
 </div>
 
 <div align="center">
