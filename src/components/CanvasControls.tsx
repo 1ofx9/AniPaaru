@@ -29,13 +29,13 @@ export const CanvasControls: React.FC<CanvasControlsProps> = ({
   };
 
   return (
-    <div className="fixed bottom-6 right-6 z-30 flex items-center gap-1.5 p-1.5 bg-white/80 dark:bg-zinc-950/40 backdrop-blur-md border border-zinc-200/80 dark:border-white/10 rounded-full shadow-[0_8px_30px_rgba(0,0,0,0.08)] dark:shadow-2xl pointer-events-auto transition-colors">
+    <div className="fixed bottom-4 sm:bottom-6 right-4 sm:right-6 bottom-[max(1rem,env(safe-area-inset-bottom))] z-30 flex items-center gap-1 sm:gap-1.5 p-1 sm:p-1.5 bg-[#fafafc]/90 dark:bg-zinc-950/60 backdrop-blur-md border border-zinc-200/80 dark:border-white/10 rounded-full shadow-[0_8px_30px_rgba(0,0,0,0.08)] dark:shadow-2xl pointer-events-auto transition-colors">
       {onResetToEmpty && (
         <>
           <Tooltip content="Back to search">
             <button
               onClick={onResetToEmpty}
-              className="w-8.5 h-8.5 rounded-full bg-transparent hover:bg-black/5 dark:hover:bg-white/8 text-zinc-600 dark:text-zinc-300 hover:text-zinc-950 dark:hover:text-white flex items-center justify-center transition-colors cursor-pointer"
+              className="w-8 h-8 sm:w-8.5 sm:h-8.5 rounded-full bg-transparent hover:bg-black/5 dark:hover:bg-white/8 text-zinc-600 dark:text-zinc-300 hover:text-zinc-950 dark:hover:text-white flex items-center justify-center transition-colors cursor-pointer"
             >
               <Home className="w-4 h-4" />
             </button>
@@ -47,7 +47,7 @@ export const CanvasControls: React.FC<CanvasControlsProps> = ({
       <Tooltip content={viewMode === 'compact' ? 'Detailed View' : 'Compact View'}>
         <button
           onClick={onToggleViewMode}
-          className={`w-8.5 h-8.5 rounded-full flex items-center justify-center transition-colors cursor-pointer ${
+          className={`w-8 h-8 sm:w-8.5 sm:h-8.5 rounded-full flex items-center justify-center transition-colors cursor-pointer ${
             viewMode === 'compact'
               ? 'bg-[#8b5cf6]/10 text-[#7c3aed] dark:bg-white/15 dark:text-white'
               : 'bg-transparent hover:bg-black/5 dark:hover:bg-white/8 text-zinc-600 dark:text-zinc-300 hover:text-zinc-950 dark:hover:text-white'
@@ -60,7 +60,7 @@ export const CanvasControls: React.FC<CanvasControlsProps> = ({
       <Tooltip content={copied ? 'Link Copied!' : 'Share Timeline'}>
         <button
           onClick={handleShare}
-          className="w-8.5 h-8.5 rounded-full bg-transparent hover:bg-black/5 dark:hover:bg-white/8 text-zinc-600 dark:text-zinc-300 hover:text-zinc-950 dark:hover:text-white flex items-center justify-center transition-colors cursor-pointer relative"
+          className="w-8 h-8 sm:w-8.5 sm:h-8.5 rounded-full bg-transparent hover:bg-black/5 dark:hover:bg-white/8 text-zinc-600 dark:text-zinc-300 hover:text-zinc-950 dark:hover:text-white flex items-center justify-center transition-colors cursor-pointer relative"
         >
           {copied ? (
             <Check className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
@@ -75,7 +75,7 @@ export const CanvasControls: React.FC<CanvasControlsProps> = ({
       <Tooltip content="Zoom In">
         <button
           onClick={() => zoomIn({ duration: 250 })}
-          className="w-8.5 h-8.5 rounded-full bg-transparent hover:bg-black/5 dark:hover:bg-white/8 text-zinc-600 dark:text-zinc-300 hover:text-zinc-950 dark:hover:text-white flex items-center justify-center transition-colors cursor-pointer"
+          className="w-8 h-8 sm:w-8.5 sm:h-8.5 rounded-full bg-transparent hover:bg-black/5 dark:hover:bg-white/8 text-zinc-600 dark:text-zinc-300 hover:text-zinc-950 dark:hover:text-white flex items-center justify-center transition-colors cursor-pointer"
         >
           <ZoomIn className="w-4 h-4" />
         </button>
@@ -84,7 +84,7 @@ export const CanvasControls: React.FC<CanvasControlsProps> = ({
       <Tooltip content="Zoom Out">
         <button
           onClick={() => zoomOut({ duration: 250 })}
-          className="w-8.5 h-8.5 rounded-full bg-transparent hover:bg-black/5 dark:hover:bg-white/8 text-zinc-600 dark:text-zinc-300 hover:text-zinc-950 dark:hover:text-white flex items-center justify-center transition-colors cursor-pointer"
+          className="w-8 h-8 sm:w-8.5 sm:h-8.5 rounded-full bg-transparent hover:bg-black/5 dark:hover:bg-white/8 text-zinc-600 dark:text-zinc-300 hover:text-zinc-950 dark:hover:text-white flex items-center justify-center transition-colors cursor-pointer"
         >
           <ZoomOut className="w-4 h-4" />
         </button>
@@ -93,7 +93,7 @@ export const CanvasControls: React.FC<CanvasControlsProps> = ({
       <Tooltip content="Fit View">
         <button
           onClick={() => fitView({ padding: 0.12, minZoom: 0.65, maxZoom: 1.25, duration: 350 })}
-          className="w-8.5 h-8.5 rounded-full bg-transparent hover:bg-black/5 dark:hover:bg-white/8 text-zinc-600 dark:text-zinc-300 hover:text-zinc-950 dark:hover:text-white flex items-center justify-center transition-colors cursor-pointer"
+          className="w-8 h-8 sm:w-8.5 sm:h-8.5 rounded-full bg-transparent hover:bg-black/5 dark:hover:bg-white/8 text-zinc-600 dark:text-zinc-300 hover:text-zinc-950 dark:hover:text-white flex items-center justify-center transition-colors cursor-pointer"
         >
           <Maximize2 className="w-4 h-4" />
         </button>

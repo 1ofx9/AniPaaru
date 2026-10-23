@@ -35,13 +35,16 @@ export const Tooltip: React.FC<TooltipProps> = ({
     }
   }, []);
 
+  // Prevent tooltips on coarse pointer (touch) devices to avoid sticky popups
+  const isTouchDevice = typeof window !== 'undefined' && window.matchMedia('(hover: none) and (pointer: coarse)').matches;
+
   const handleMouseEnter = useCallback(() => {
-    if (disabled || !content) return;
+    if (disabled || !content || isTouchDevice) return;
     clearTimer();
     timerRef.current = setTimeout(() => {
       setIsVisible(true);
     }, delayMs);
-  }, [clearTimer, delayMs, disabled, content]);
+  }, [clearTimer, delayMs, disabled, content, isTouchDevice]);
 
   const handleMouseLeave = useCallback(() => {
     clearTimer();

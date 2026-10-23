@@ -37,6 +37,7 @@ interface CanvasViewProps {
   onToggleViewMode: () => void;
   isLoading: boolean;
   selectedMediaId: number | null;
+  targetFocusNodeId?: number | null;
   onSelectNode: (id: number) => void;
   onResetToEmpty: () => void;
   hasActiveAnime: boolean;
@@ -50,6 +51,7 @@ function CanvasView({
   onToggleViewMode,
   isLoading,
   selectedMediaId,
+  targetFocusNodeId,
   onSelectNode,
   onResetToEmpty,
   hasActiveAnime,
@@ -59,6 +61,17 @@ function CanvasView({
 
   const nodeOffsetX = viewMode === 'compact' ? 100 : 130;
   const nodeOffsetY = viewMode === 'compact' ? 23 : 43;
+
+  useEffect(() => {
+    if (!targetFocusNodeId) return;
+    const targetNode = nodes.find((n) => n.id === targetFocusNodeId.toString());
+    if (targetNode) {
+      setCenter(targetNode.position.x + nodeOffsetX, targetNode.position.y + nodeOffsetY, {
+        zoom: 1.05,
+        duration: 500,
+      });
+    }
+  }, [targetFocusNodeId, nodes, setCenter, nodeOffsetX, nodeOffsetY]);
 
   const hasFittedInitialRef = useRef(false);
   const wasLoadingRef = useRef(false);
@@ -235,7 +248,7 @@ function CanvasView({
             variant={BackgroundVariant.Dots}
             gap={20}
             size={1}
-            color={theme === 'dark' ? "rgba(255, 255, 255, 0.04)" : "rgba(0, 0, 0, 0.08)"}
+            color={theme === 'dark' ? "rgba(255, 255, 255, 0.04)" : "rgba(0, 0, 0, 0.04)"}
           />
         </ReactFlow>
       </div>
@@ -300,6 +313,15 @@ export default function App() {
     setSelectedMediaId,
   } = useFranchise(userEntries, filters, viewMode, theme);
 
+  const [targetFocusNodeId, setTargetFocusNodeId] = useState<number | null>(null);
+
+  const handleFocusNode = useCallback((id: number) => {
+    setSelectedMediaId(id);
+    setTargetFocusNodeId(id);
+    const timer = setTimeout(() => setTargetFocusNodeId(null), 600);
+    return () => clearTimeout(timer);
+  }, [setSelectedMediaId]);
+
   useEffect(() => {
     const url = new URL(window.location.href);
     if (rootMediaId) {
@@ -327,7 +349,7 @@ export default function App() {
   }, [rootMediaId, filters, viewMode]);
 
   return (
-    <div className="relative w-screen h-screen overflow-hidden bg-zinc-100 dark:bg-black text-zinc-900 dark:text-zinc-100 select-none transition-colors duration-200">
+    <div className="relative w-screen h-screen overflow-hidden bg-[#ebebee] dark:bg-black text-zinc-900 dark:text-zinc-100 select-none transition-colors duration-200">
       <FloatingNav
         user={user}
         userName={userName}
@@ -347,19 +369,22 @@ export default function App() {
         onToggleTheme={toggleTheme}
         onSelectFranchise={loadFranchise}
         onClearFranchise={clearFranchise}
+        nodes={nodes}
+        userEntries={userEntries}
+        onFocusNode={handleFocusNode}
       />
 
       {rootMediaId && franchiseStats && !isLoading && (
-        <div className="fixed top-18.5 sm:top-20 inset-x-0 mx-auto w-fit z-20 px-3.5 py-1.5 rounded-full bg-white/90 dark:bg-zinc-950/70 backdrop-blur-md border border-zinc-200/90 dark:border-white/10 shadow-[0_4px_16px_rgba(0,0,0,0.06)] dark:shadow-xl flex items-center gap-2 text-xs font-mono text-zinc-600 dark:text-zinc-400 select-none animate-in fade-in slide-in-from-top-1 duration-200">
-          <span className="font-semibold text-zinc-950 dark:text-zinc-100">
+        <div className="fixed top-17 sm:top-20 inset-x-0 mx-auto w-fit max-w-[calc(100vw-2rem)] z-20 px-3 sm:px-3.5 py-1 sm:py-1.5 rounded-full bg-white/90 dark:bg-zinc-950/70 backdrop-blur-md border border-zinc-200/90 dark:border-white/10 shadow-[0_4px_16px_rgba(0,0,0,0.06)] dark:shadow-xl flex items-center gap-1.5 sm:gap-2 text-[11px] sm:text-xs font-mono text-zinc-600 dark:text-zinc-400 select-none animate-in fade-in slide-in-from-top-1 duration-200">
+          <span className="font-semibold text-zinc-950 dark:text-zinc-100 shrink-0">
             {franchiseStats.completedEntries}/{franchiseStats.totalEntries} Watched
           </span>
           <span className="text-zinc-300 dark:text-zinc-700">·</span>
-          <span className="text-[#8b5cf6] dark:text-[#c4b5fd] font-semibold">
+          <span className="text-[#8b5cf6] dark:text-[#c4b5fd] font-semibold shrink-0">
             {franchiseStats.percentComplete}%
           </span>
-          <span className="text-zinc-300 dark:text-zinc-700">·</span>
-          <span>
+          <span className="text-zinc-300 dark:text-zinc-700 hidden xs:inline">·</span>
+          <span className="hidden xs:inline truncate">
             {franchiseStats.remainingEpisodes > 0
               ? `${franchiseStats.remainingEpisodes} EPS (~${franchiseStats.remainingHours}h remaining)`
               : 'Complete'}
@@ -422,6 +447,7 @@ export default function App() {
           }
           isLoading={isLoading}
           selectedMediaId={selectedMediaId}
+          targetFocusNodeId={targetFocusNodeId}
           onSelectNode={(id) => setSelectedMediaId(id || null)}
           onResetToEmpty={clearFranchise}
           hasActiveAnime={Boolean(rootMediaId)}

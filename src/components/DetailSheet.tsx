@@ -41,14 +41,17 @@ export const DetailSheet: React.FC<DetailSheetProps> = ({
   const cleanDescription = formatSynopsis(media.description);
 
   return (
-    <div className="fixed inset-0 z-50 overflow-hidden pointer-events-auto">
+    <div className="fixed inset-0 z-50 overflow-hidden pointer-events-auto flex flex-col justify-end sm:justify-start">
       <div
-        className="absolute inset-0 bg-black/20 dark:bg-black/20 backdrop-blur-sm transition-opacity"
+        className="absolute inset-0 bg-black/40 sm:bg-black/20 dark:bg-black/50 sm:dark:bg-black/20 backdrop-blur-sm transition-opacity"
         onClick={onClose}
       />
 
-      <div className="fixed inset-y-0 right-0 max-w-full flex pl-4 sm:pl-6">
-        <div className="w-screen max-w-md bg-white dark:bg-[#0c0c0e] border-l border-zinc-200 dark:border-white/10 shadow-2xl flex flex-col text-zinc-900 dark:text-zinc-100 relative">
+      <div className="fixed inset-x-0 bottom-0 sm:inset-x-auto sm:inset-y-0 sm:right-0 max-w-full flex sm:pl-6 pointer-events-none">
+        <div className="w-full sm:w-screen sm:max-w-md max-h-[90vh] sm:max-h-full rounded-t-3xl sm:rounded-none bg-[#fafafc] dark:bg-[#0c0c0e] border-t sm:border-t-0 sm:border-l border-zinc-200/90 dark:border-white/10 shadow-2xl flex flex-col text-zinc-900 dark:text-zinc-100 relative pointer-events-auto overflow-hidden animate-in slide-in-from-bottom sm:slide-in-from-right duration-200">
+          {/* Mobile Handle Drag Indicator */}
+          <div className="sm:hidden absolute top-2 inset-x-0 mx-auto w-10 h-1 rounded-full bg-white/40 backdrop-blur-sm z-30" />
+
           <Tooltip content="Close (Esc)" side="left">
             <button
               onClick={onClose}
@@ -58,7 +61,7 @@ export const DetailSheet: React.FC<DetailSheetProps> = ({
             </button>
           </Tooltip>
 
-          <div className="relative h-44 w-full bg-zinc-900 shrink-0 overflow-hidden">
+          <div className="relative h-36 sm:h-44 w-full bg-zinc-900 shrink-0 overflow-hidden">
             {media.bannerImage ? (
               <img
                 src={media.bannerImage}
@@ -234,13 +237,13 @@ export const DetailSheet: React.FC<DetailSheetProps> = ({
             )}
           </div>
 
-          <div className="p-3.5 border-t border-zinc-200 dark:border-white/10 bg-zinc-50/90 dark:bg-[#0c0c0e] flex items-center gap-2">
+          <div className="p-3.5 pb-[max(0.875rem,env(safe-area-inset-bottom))] border-t border-zinc-200/90 dark:border-white/10 bg-[#f0f0f4]/90 dark:bg-[#0c0c0e] flex items-center gap-2">
             {media.siteUrl && (
               <a
                 href={media.siteUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex-1 py-2 px-3 rounded-xl bg-white dark:bg-white/5 hover:bg-zinc-100 dark:hover:bg-white/10 border border-zinc-200 dark:border-white/10 text-zinc-800 dark:text-zinc-200 hover:text-black dark:hover:text-white flex items-center justify-center gap-1.5 text-xs font-medium transition-colors shadow-sm"
+                className="flex-1 py-2 px-3 rounded-xl bg-[#fafafc] dark:bg-white/5 hover:bg-zinc-200/70 dark:hover:bg-white/10 border border-zinc-200/90 dark:border-white/10 text-zinc-800 dark:text-zinc-200 hover:text-black dark:hover:text-white flex items-center justify-center gap-1.5 text-xs font-medium transition-colors shadow-xs"
               >
                 <span>AniList</span>
                 <ExternalLink className="w-3.5 h-3.5 text-zinc-400" />
@@ -251,7 +254,7 @@ export const DetailSheet: React.FC<DetailSheetProps> = ({
                 href={`https://myanimelist.net/anime/${media.idMal}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex-1 py-2 px-3 rounded-xl bg-white dark:bg-white/5 hover:bg-zinc-100 dark:hover:bg-white/10 border border-zinc-200 dark:border-white/10 text-zinc-800 dark:text-zinc-200 hover:text-black dark:hover:text-white flex items-center justify-center gap-1.5 text-xs font-medium transition-colors shadow-sm"
+                className="flex-1 py-2 px-3 rounded-xl bg-[#fafafc] dark:bg-white/5 hover:bg-zinc-200/70 dark:hover:bg-white/10 border border-zinc-200/90 dark:border-white/10 text-zinc-800 dark:text-zinc-200 hover:text-black dark:hover:text-white flex items-center justify-center gap-1.5 text-xs font-medium transition-colors shadow-xs"
               >
                 <span>MyAnimeList</span>
                 <ExternalLink className="w-3.5 h-3.5 text-zinc-400" />
