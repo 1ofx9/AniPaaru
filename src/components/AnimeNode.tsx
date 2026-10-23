@@ -35,7 +35,7 @@ export const AnimeNode = memo(({ id, data, selected }: AnimeNodeProps) => {
     return (
       <div
         className={`relative group flex items-center w-50 h-11.5 rounded-lg px-2 py-1 transition-all duration-200
-          bg-white dark:bg-[#09090b]/90 backdrop-blur-md border text-zinc-900 dark:text-zinc-100 shadow-sm dark:shadow-md select-none cursor-pointer
+          bg-[#fafafb] dark:bg-[#09090b]/90 backdrop-blur-md border text-zinc-900 dark:text-zinc-100 shadow-sm dark:shadow-md select-none cursor-pointer
           ${
             selected || data.isHighlighted
               ? 'opacity-100'
@@ -118,7 +118,7 @@ export const AnimeNode = memo(({ id, data, selected }: AnimeNodeProps) => {
   return (
     <div
       className={`relative group flex items-center w-65 h-20 rounded-xl px-2.5 py-2 transition-all duration-200
-        bg-white dark:bg-[#09090b]/90 backdrop-blur-md border text-zinc-900 dark:text-zinc-100 shadow-[0_4px_16px_rgba(0,0,0,0.08),0_1px_3px_rgba(0,0,0,0.05)] dark:shadow-xl select-none cursor-pointer
+        bg-[#fafafb] dark:bg-[#09090b]/90 backdrop-blur-md border text-zinc-900 dark:text-zinc-100 shadow-[0_4px_16px_rgba(0,0,0,0.06),0_1px_3px_rgba(0,0,0,0.04)] dark:shadow-xl select-none cursor-pointer
         ${
           selected || data.isHighlighted
             ? 'opacity-100'
@@ -180,7 +180,7 @@ export const AnimeNode = memo(({ id, data, selected }: AnimeNodeProps) => {
           <span className="font-semibold text-zinc-900 dark:text-zinc-300">
             {formattedFormat}
           </span>
-          <span className="text-zinc-400 dark:text-zinc-600">//</span>
+          <span className="text-zinc-400 dark:text-zinc-600">•</span>
           <span className="text-zinc-600 dark:text-zinc-400">
             {episodesText}
           </span>
