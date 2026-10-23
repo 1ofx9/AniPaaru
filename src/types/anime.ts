@@ -89,7 +89,7 @@ export interface AniListMedia {
   studios?: {
     edges?: AniListStudioEdge[];
   };
-  relations: {
+  relations?: {
     edges: AniListRelationEdge[];
   };
 }

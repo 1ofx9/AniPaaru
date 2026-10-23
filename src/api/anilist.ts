@@ -1,5 +1,6 @@
 import type { AniListMedia, AniListUser, UserMediaListEntry } from '../types/anime';
 import { idbGet, idbSet } from '../utils/db';
+import { parseSearchInput } from '../utils/searchParser';
 
 const ANILIST_GRAPHQL_ENDPOINT = 'https://graphql.anilist.co';
 
@@ -178,15 +179,33 @@ ${FRANCHISE_MEDIA_FIELDS}
 `;
 
 const SEARCH_ANIME_QUERY = `
-query SearchAnime($search: String, $page: Int = 1, $perPage: Int = 8) {
+query SearchAnime(
+  $search: String,
+  $id: Int,
+  $idMal: Int,
+  $format_in: [MediaFormat],
+  $seasonYear: Int,
+  $page: Int = 1,
+  $perPage: Int = 8
+) {
   Page(page: $page, perPage: $perPage) {
-    media(search: $search, type: ANIME, sort: [POPULARITY_DESC]) {
+    media(
+      search: $search,
+      id: $id,
+      idMal: $idMal,
+      format_in: $format_in,
+      seasonYear: $seasonYear,
+      type: ANIME,
+      sort: [POPULARITY_DESC]
+    ) {
       id
       title {
         romaji
         english
+        native
       }
       format
+      status
       episodes
       seasonYear
       coverImage {
@@ -283,13 +302,31 @@ export async function fetchAniListMedia(
 
 export async function searchAnime(query: string, signal?: AbortSignal): Promise<AniListMedia[]> {
   if (!query || query.trim().length === 0) return [];
-  const cacheKey = `search_${query.trim().toLowerCase()}`;
+
+  const parsed = parseSearchInput(query);
+  const cacheKey = `search_${JSON.stringify(parsed)}`;
   const cached = await getCached<AniListMedia[]>(cacheKey);
   if (cached) return cached;
 
+  const variables: Record<string, any> = {};
+
+  if (parsed.type === 'anilist_url' || parsed.type === 'numeric_id') {
+    variables.id = parsed.id;
+  } else if (parsed.type === 'mal_url') {
+    variables.idMal = parsed.idMal;
+  } else {
+    if (parsed.cleanText) variables.search = parsed.cleanText;
+    if (parsed.format_in && parsed.format_in.length > 0) variables.format_in = parsed.format_in;
+    if (parsed.seasonYear) variables.seasonYear = parsed.seasonYear;
+  }
+
+  if (!variables.id && !variables.idMal && !variables.search && !variables.seasonYear) {
+    return [];
+  }
+
   const data = await queryAniList<{ Page: { media: AniListMedia[] } }>(
     SEARCH_ANIME_QUERY,
-    { search: query.trim() },
+    variables,
     signal
   );
 
