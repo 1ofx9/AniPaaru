@@ -240,6 +240,9 @@ function CanvasView({
           panOnScrollMode={PanOnScrollMode.Free}
           zoomOnPinch={true}
           panOnDrag={true}
+          nodesDraggable={false}
+          nodesConnectable={false}
+          elementsSelectable={true}
           defaultEdgeOptions={{
             type: 'animeEdge',
           }}

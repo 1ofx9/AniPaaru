@@ -63,12 +63,14 @@ export const AnimeNode = memo(({ id, data, selected }: AnimeNodeProps) => {
         <Handle
           type="target"
           position={Position.Left}
-          className="w-1.5! h-1.5! bg-zinc-400! dark:bg-zinc-600! border-0!"
+          isConnectable={false}
+          className="w-1.5! h-1.5! bg-zinc-400! dark:bg-zinc-600! border-0! pointer-events-none!"
         />
         <Handle
           type="source"
           position={Position.Right}
-          className="w-1.5! h-1.5! bg-zinc-400! dark:bg-zinc-600! border-0!"
+          isConnectable={false}
+          className="w-1.5! h-1.5! bg-zinc-400! dark:bg-zinc-600! border-0! pointer-events-none!"
         />
 
         <div className="relative shrink-0 w-7 h-9.5 rounded overflow-hidden bg-zinc-100 dark:bg-zinc-900 mr-2 border border-zinc-300/80 dark:border-white/5">
@@ -146,12 +148,14 @@ export const AnimeNode = memo(({ id, data, selected }: AnimeNodeProps) => {
       <Handle
         type="target"
         position={Position.Left}
-        className="w-1.5! h-1.5! bg-zinc-400! dark:bg-zinc-600! border-0!"
+        isConnectable={false}
+        className="w-1.5! h-1.5! bg-zinc-400! dark:bg-zinc-600! border-0! pointer-events-none!"
       />
       <Handle
         type="source"
         position={Position.Right}
-        className="w-1.5! h-1.5! bg-zinc-400! dark:bg-zinc-600! border-0!"
+        isConnectable={false}
+        className="w-1.5! h-1.5! bg-zinc-400! dark:bg-zinc-600! border-0! pointer-events-none!"
       />
 
       <div className="relative shrink-0 w-10 h-14 rounded-lg overflow-hidden bg-zinc-100 dark:bg-zinc-900 mr-2.5 border border-zinc-300/80 dark:border-white/5">
