@@ -96,14 +96,15 @@ function CanvasView({
             duration: 600,
           });
         } else if (shouldFitInitial && nextNode) {
+          const isMobile = window.innerWidth < 640;
           setCenter(nextNode.position.x + nodeOffsetX, nextNode.position.y + nodeOffsetY, {
-            zoom: 0.95,
+            zoom: isMobile ? 0.75 : 0.95,
             duration: 400,
           });
         } else {
           fitView({
-            padding: 0.12,
-            minZoom: 0.65,
+            padding: window.innerWidth < 640 ? 0.2 : 0.12,
+            minZoom: 0.5,
             maxZoom: 1.0,
             duration: shouldFitComplete ? 500 : 400,
           });

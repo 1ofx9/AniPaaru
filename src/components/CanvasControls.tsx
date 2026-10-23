@@ -31,17 +31,17 @@ export const CanvasControls: React.FC<CanvasControlsProps> = ({
   return (
     <div className="fixed bottom-4 sm:bottom-6 right-4 sm:right-6 bottom-[max(1rem,env(safe-area-inset-bottom))] z-30 flex items-center gap-1 sm:gap-1.5 p-1 sm:p-1.5 bg-[#fafafc]/90 dark:bg-zinc-950/60 backdrop-blur-md border border-zinc-200/80 dark:border-white/10 rounded-full shadow-[0_8px_30px_rgba(0,0,0,0.08)] dark:shadow-2xl pointer-events-auto transition-colors">
       {onResetToEmpty && (
-        <>
+        <div className="hidden sm:flex sm:items-center">
           <Tooltip content="Back to search">
             <button
               onClick={onResetToEmpty}
-              className="w-8 h-8 sm:w-8.5 sm:h-8.5 rounded-full bg-transparent hover:bg-black/5 dark:hover:bg-white/8 text-zinc-600 dark:text-zinc-300 hover:text-zinc-950 dark:hover:text-white flex items-center justify-center transition-colors cursor-pointer"
+              className="w-8.5 h-8.5 rounded-full bg-transparent hover:bg-black/5 dark:hover:bg-white/8 text-zinc-600 dark:text-zinc-300 hover:text-zinc-950 dark:hover:text-white flex items-center justify-center transition-colors cursor-pointer"
             >
               <Home className="w-4 h-4" />
             </button>
           </Tooltip>
           <div className="w-px h-4 bg-zinc-200 dark:bg-white/10 mx-0.5" />
-        </>
+        </div>
       )}
 
       <Tooltip content={viewMode === 'compact' ? 'Detailed View' : 'Compact View'}>
@@ -70,25 +70,27 @@ export const CanvasControls: React.FC<CanvasControlsProps> = ({
         </button>
       </Tooltip>
 
-      <div className="w-px h-4 bg-zinc-200 dark:bg-white/10 mx-0.5" />
+      <div className="hidden sm:block w-px h-4 bg-zinc-200 dark:bg-white/10 mx-0.5" />
 
-      <Tooltip content="Zoom In">
-        <button
-          onClick={() => zoomIn({ duration: 250 })}
-          className="w-8 h-8 sm:w-8.5 sm:h-8.5 rounded-full bg-transparent hover:bg-black/5 dark:hover:bg-white/8 text-zinc-600 dark:text-zinc-300 hover:text-zinc-950 dark:hover:text-white flex items-center justify-center transition-colors cursor-pointer"
-        >
-          <ZoomIn className="w-4 h-4" />
-        </button>
-      </Tooltip>
+      <div className="hidden sm:contents">
+        <Tooltip content="Zoom In">
+          <button
+            onClick={() => zoomIn({ duration: 250 })}
+            className="w-8.5 h-8.5 rounded-full bg-transparent hover:bg-black/5 dark:hover:bg-white/8 text-zinc-600 dark:text-zinc-300 hover:text-zinc-950 dark:hover:text-white flex items-center justify-center transition-colors cursor-pointer"
+          >
+            <ZoomIn className="w-4 h-4" />
+          </button>
+        </Tooltip>
 
-      <Tooltip content="Zoom Out">
-        <button
-          onClick={() => zoomOut({ duration: 250 })}
-          className="w-8 h-8 sm:w-8.5 sm:h-8.5 rounded-full bg-transparent hover:bg-black/5 dark:hover:bg-white/8 text-zinc-600 dark:text-zinc-300 hover:text-zinc-950 dark:hover:text-white flex items-center justify-center transition-colors cursor-pointer"
-        >
-          <ZoomOut className="w-4 h-4" />
-        </button>
-      </Tooltip>
+        <Tooltip content="Zoom Out">
+          <button
+            onClick={() => zoomOut({ duration: 250 })}
+            className="w-8.5 h-8.5 rounded-full bg-transparent hover:bg-black/5 dark:hover:bg-white/8 text-zinc-600 dark:text-zinc-300 hover:text-zinc-950 dark:hover:text-white flex items-center justify-center transition-colors cursor-pointer"
+          >
+            <ZoomOut className="w-4 h-4" />
+          </button>
+        </Tooltip>
+      </div>
 
       <Tooltip content="Fit View">
         <button
